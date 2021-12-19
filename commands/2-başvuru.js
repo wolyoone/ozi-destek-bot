@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed, Discord } = require('discord.js');
 const oziayar = require('../Settings/config.json')
 const { red, green, star } = require("../Settings/config.json")
 
@@ -7,7 +7,8 @@ module.exports = {
     aliases: ['basvuru'],
 
     run: async(client, message, args) => {
-		const embed = new Discord.MessageEmbed().setColor(oziayar.Color).setFooter(oziayar.Footer)
+
+
 if(![oziayar.TagRoleID].some(role => message.member.roles.cache.get(role))) return message.react(oziayar.red)
 if([oziayar.EnAltYetkiliRoleID].some(role2 => message.member.roles.cache.get(role2))) return message.react(oziayar.red) 
 
@@ -54,13 +55,12 @@ if(message.channel.id === oziayar.BasvuruKomutKullanımKanalı){
 					.then(function (collected) {
 					collected.each(msj => cevaplar.push(msj.content));
 
-
-								  
+ 
 				channel.send("Başvurunuz başarıyla alındı, yetkili arkadaşlar sizinle ilgilenecekler, başvuru için teşekkür ederiz. Kanal birazdan silinecek...")
  
-LogChannel.send(`<@&${oziayar.YetkiliAlımRoleID}> ${message.author}`)
-LogChannel.send(embed.setDescription(`
-${message.author.tag} (\`${message.author.id}\`) **Kullanıcısının Başvuru Formu**  
+    let ozi = new MessageEmbed()
+.setDescription(`
+**${message.author.tag}** - (\`${message.author.id}\`) **Kullanıcısının Başvuru Formu**  
 
   ${star} **İsminiz ve yaşınız**
   \`${cevaplar[0]}\`
@@ -74,10 +74,13 @@ ${message.author.tag} (\`${message.author.id}\`) **Kullanıcısının Başvuru F
   ${star} **Kendiniz hakkında biraz bilgi**
   \`${cevaplar[3]}\`
 
-${message.author}  Kullanıcısı'nın Başvurusu
-${star} *Onaylamak için :* \`.onayla id\` ${green}
-${star} *Reddetmek için :* \`.reddet id\` ${red}
-`));
+${message.author} Kullanıcısı'nın Başvurusu
+
+${star} **Cevaplamak için :** \`.cevapla <id>\`
+`);
+ 
+LogChannel.send(`<@&${oziayar.YetkiliAlımRoleID}> ${message.author}`, {embed: ozi})
+
 									setTimeout(function() {
 										channel.delete()
 									}, 3000);
